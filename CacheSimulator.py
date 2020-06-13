@@ -37,7 +37,7 @@ class CacheSimulator:
         self._lrus = list(map(lambda i: LRU(ways), range(blockSize)))
 
     
-    def find(self, address) -> bool:
+    def find(self, address:int) -> bool:
         #calculating memory block and cache block index
         memBlock = self.calculateMemBlock(address)
         index = self.calculateCacheBlock(memBlock=memBlock)
