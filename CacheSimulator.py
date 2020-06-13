@@ -60,7 +60,7 @@ class CacheSimulator:
         
         #updating LRU
         self._lrus[index].pushToTop(lru)
-        if(self.debug): print(f"LAST USED BLOCK: {lru}")
+        if(self.debug): print(f"LAST USED BLOCK FOR CACHEBLOCK {index}: {lru}")
 
         return hit
 
