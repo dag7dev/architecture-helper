@@ -3,13 +3,6 @@ import sys
 import os
 import json
 
-# ugly part, I hate globals too!
-global addresses_list
-global address_byte_length
-global cache_type
-global cache_sets
-global cache_word_length
-
 # DEFAULT VALUES
 # ==============
 # data segment
@@ -20,16 +13,19 @@ addresses_list = \
          376]
     ]
 
-address_byte_length = 32
-
 # cache segment
 # NOTE: any-other-way has not been implemented. DO NOT change this value.
 cache_type = 2  # two-way by default
-cache_sets = 2
-cache_word_length = 8  # not sure if it could be useful
+cache_sets = 8
+cache_block_size = 32
+
+hits = misses = 0
 
 
 def main():
+    global addresses_list
+    global cache_block_size, cache_type, cache_sets
+
     show_help_maybe()
 
     # check if file option has been activated
@@ -41,11 +37,10 @@ def main():
             with open(sys.argv[filename_index], "r") as fd:
                 calc_params = json.load(fd)
                 addresses_list = calc_params['addresses_list']
-                address_byte_length = calc_params['address_byte_length']
+                cache_block_size = calc_params['cache_block_size']
 
                 cache_type = calc_params['cache_type']
                 cache_sets = calc_params['cache_sets']
-                cache_word_length = calc_params['cache_word_length']  # not sure if it could be useful
         else:
             print(
                 "Mmh, " + sys.argv[filename_index] + " doesn't appear to exist.\n" +
@@ -63,20 +58,23 @@ def main():
         # beautiful print in a table
         print("data address\t"
               "block number\t"
-              "set number\t\t"
+              "set number\t"
               "hit or miss")
 
         for element in address_list:
-            block_number = element // address_byte_length
+            block_number = element // cache_block_size
 
             # there is a more efficient way. Currently idk
             set_number = block_number % cache_sets
 
-            print("\t" + str(element) + "\t\t | \t" +
+            print("\t" + str(element) + "\t | \t" +
                   "\t" + str(block_number) + " \t\t | \t" +
                   "\t" + str(set_number) + " \t\t | \t" +
                   "\t" + hit_or_miss(cache, set_number, block_number, last_element_pointers) + " \t")
         print()
+
+    global hits,misses
+    print(f"HITS: {hits} MISSES: {misses}")
 
 
 def hit_or_miss(cache, set_number, block_number, last_element_pointers):
@@ -88,6 +86,7 @@ def hit_or_miss(cache, set_number, block_number, last_element_pointers):
 
     # last_element_pointers -> array who contains pointer to the last element
     """
+    global hits,misses
     for cell in range(len(cache[set_number])):
         data = cache[set_number][cell]
         row = cache[set_number]  # row
@@ -95,6 +94,7 @@ def hit_or_miss(cache, set_number, block_number, last_element_pointers):
         if block_number not in row and data is None:
             row[cell] = block_number
             last_element_pointers[set_number] = row.index(block_number)
+            misses += 1
             return "M"
 
         elif block_number not in row and None not in row:
@@ -105,10 +105,11 @@ def hit_or_miss(cache, set_number, block_number, last_element_pointers):
                 last_element_pointers[set_number] += 1
 
             row[last_element_pointers[set_number]] = block_number
-
+            misses += 1
             return "M"
-
+            
         elif block_number in row:
+            hits += 1
             return "H"
 
 
