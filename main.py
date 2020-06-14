@@ -11,6 +11,11 @@ def main():
     cache_sets = 8
     cache_block_size = 32
     addresses = [24, 64, 164, 32, 208, 128, 44, 192, 432, 452, 88, 212, 504, 384, 32, 52, 292, 232, 388, 400, 404, 288, 40, 376]
+    
+    #check if the help has been requested
+    if "-h" in sys.argv:
+        show_help()
+        exit(0)
 
     # check if file option has been activated
     if "-f" in sys.argv:
@@ -31,13 +36,9 @@ def main():
                 "Did you read the help message, didn't you?\n" +
                 "(launch the program with -h option)")
             exit(0)
-    
-    #check if the help has been requested
-    elif "-h" in sys.argv:
-        show_help()
 
+    #if the test option has not been activated, the help neither and the file neither, it means that the user want to input data by himself
     elif "-t" not in sys.argv:
-        #if the test option has not been activated it means that the user want to input data by himself
 
         #addresses input
         addresses_output = "Insert address list ([]):"
