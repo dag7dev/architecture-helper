@@ -1,6 +1,6 @@
 DEBUG = False
 
-from typing import List
+from typing import List, Tuple
 
 class LRU:
     _values:List
@@ -37,7 +37,7 @@ class CacheSimulator:
         self._lrus = list(map(lambda i: LRU(ways), range(blockSize)))
 
     
-    def find(self, address:int) -> bool:
+    def find(self, address:int) -> Tuple:
         #calculating memory block and cache block index
         memBlock = self.calculateMemBlock(address)
         index = self.calculateCacheBlock(memBlock=memBlock)
@@ -62,6 +62,10 @@ class CacheSimulator:
         self._lrus[index].pushToTop(lru)
         if(self.debug): print(f"LAST USED BLOCK FOR CACHEBLOCK {index}: {lru}")
 
+        return hit, memBlock, index, lru
+
+    def hitOrMiss(self, address:int) -> bool:
+        hit, _, _, _ = self.find(address)
         return hit
 
     def calculateMemBlock(self, address:int) -> int:
