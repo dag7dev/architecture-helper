@@ -43,14 +43,8 @@ def main():
     elif "-t" not in sys.argv:
 
         #addresses input
-        addresses_output = "Insert address list ([]):"
-        addresses_dirty = input(addresses_output)
-        addresses = formatAddressList(addresses_dirty)
-
-        #clearing output and pretty-printing
-        clearSpaces = " " * (len(addresses_dirty)+len(addresses_output))
-        print("\033[A"+ clearSpaces +"\n\033[A",end="")
-        print(addresses_output, addresses)
+        addresses = formatAddressList(input("Insert address list ([]):"))
+        print(addresses)
 
         #cache data
         cache_type          = int(input(f"Cache type number ({cache_type}): ") or cache_type)
@@ -77,6 +71,8 @@ def run_tests(cache_type:int, cache_sets:int, cache_block_size:int, addresses:Li
         print(f"{address}\t{memBlock}\t{cacheBlock}{wayIndex}\t{'Hit' if hit else 'Miss'}")
 
     print(f"HITS: {hits} MISSES: {misses}")
+
+    input("PRESS ENTER TO CLOSE")
         
 
 def show_help():
