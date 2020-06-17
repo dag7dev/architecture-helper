@@ -31,7 +31,7 @@ namespace MeiSolver.BackEnd
         public (bool, int, int, int) find(int address) {
             //calculating memory block and cache block index
             int memBlock = calculateMemBlock(address);
-            int index = calculatecacheSet(memBlock);
+            int index = calculatecacheSet(memBlock:memBlock);
 
             List<int> cacheSet = cacheSets[index];
 
