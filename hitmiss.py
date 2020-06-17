@@ -5,7 +5,7 @@ import os
 import json
 from typing import List
 
-from CacheSimulator import CacheSimulator
+from libs.CacheSimulator import CacheSimulator
 
 def main():
     #DEFAULT VALUES FOR -t
