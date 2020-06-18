@@ -1,6 +1,8 @@
-# Hit/Miss Cache calculator
+# Architecture Helper
 
-A simple python3 hit or miss cache calculator, created to test a list of memory access in an hardware cache.
+Includes may tools, pipeline drawer, hit and miss cache calculator, tlb missrate.
+
+Helper with GUI: https://github.com/architecture-helper/architecture-helper
 
 ## Getting Started
 
