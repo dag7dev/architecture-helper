@@ -1,6 +1,6 @@
 # Architecture Helper
 
-Includes may tools, pipeline drawer, hit and miss cache calculator, tlb missrate.
+Includes several tools: pipeline drawer, hit and miss cache calculator, tlb missrate.
 
 Helper with GUI: https://github.com/architecture-helper/architecture-helper
 
